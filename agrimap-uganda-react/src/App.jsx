@@ -61,6 +61,16 @@ export default function App(){
   const[mapCenter,setMapCenter]=useState(null)
   const[sidebarOpen,setSidebarOpen]=useState(false)
   const[rpOpen,setRpOpen]=useState(false)
+  const[voiceOpen,setVoiceOpen]=useState(false)
+  const tabsRef=useRef(null)
+
+  useEffect(()=>{
+    const el=tabsRef.current
+    if(!el)return
+    const onWheel=(e)=>{if(Math.abs(e.deltaY)>0){e.preventDefault();el.scrollLeft+=e.deltaY}}
+    el.addEventListener('wheel',onWheel,{passive:false})
+    return()=>el.removeEventListener('wheel',onWheel)
+  },[])
 
   useEffect(()=>{document.body.classList.toggle('dark',dark)},[dark])
 
@@ -196,9 +206,9 @@ export default function App(){
         <div style={{fontSize:13,fontWeight:800,color:'var(--tx)'}}>Uganda — National Overview</div>
         <div style={{fontSize:9,color:'var(--t3)'}}>Click any district on the map to drill down · {D.length} districts mapped</div>
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:4,width:'100%'}}>
+      <div className="rp-nat-grid">
         {[{v:'45.9M',l:'Population 2024',c:'#16a34a'},{v:'$2.4B',l:'Coffee Export 24/25',c:'#92400e'},{v:'3.7B L',l:'Milk / Year',c:'#0e7490'},{v:'64%',l:'Finance Access',c:'#2563eb'},{v:'29%',l:'Child Stunting',c:'#dc2626'},{v:'4.2M',l:'Food At-Risk',c:'#ea580c'}].map((k,i)=>(
-          <div key={i} style={{background:'var(--s2)',border:'1px solid var(--bd)',borderRadius:7,padding:'7px 5px',textAlign:'center'}}>
+          <div key={i} className="rp-nat-kpi">
             <div style={{fontSize:16,fontWeight:800,color:k.c}}>{k.v}</div>
             <div style={{fontSize:7,color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.5px'}}>{k.l}</div>
           </div>
@@ -223,17 +233,21 @@ export default function App(){
         <button className="mobile-menu-btn" onClick={()=>setSidebarOpen(!sidebarOpen)}>☰</button>
         <div className="logo"><span className="logo-i">🌿</span><span className="logo-t">Agri<span>Map</span></span></div>
         <span className="bdg bdg-ug">🇺🇬 UGANDA</span>
-        <span className="bdg bdg-live">● LIVE</span>
-        <div className="mtabs">
-          {[{t:'production',l:'🌽 Production'},{t:'environment',l:'🛰️ Environment'},{t:'market',l:'📈 Markets'},{t:'inputs',l:'🧴 Inputs'},{t:'finance',l:'💳 Finance'},{t:'youth',l:'👩‍🌾 Youth Farmers'},{t:'dairy',l:'🐄 Dairy'},{t:'programmes',l:'🗺️ Programmes'},{t:'foundation',l:'🌿 Foundation'},{t:'impact',l:'📊 Impact'},{t:'eudr',l:'☕ EUDR'},{t:'concept',l:'📝 Concept Note'},{t:'intelligence',l:'⚠️ Intelligence'},{t:'ai',l:'✨ AI'},{t:'datasources',l:'📊 Data'},{t:'demo',l:'🎯 Demo Mode'}].map(tab=>{
-            if(!allowedTabs.includes(tab.t))return null
-            const isDemo=tab.t==='demo'
-            const isFoundation=tab.t==='foundation'
-            const isAI=tab.t==='ai'
-            return <button key={tab.t} className={'mtb'+(curTab===tab.t?' on':'')} data-t={tab.t} onClick={()=>setTab(tab.t)}
-              style={isDemo?{color:'#fff',fontWeight:800,background:'linear-gradient(135deg,#ea580c,#c2410c)',borderRadius:6,padding:'0 12px'}:isFoundation?{color:'#ea580c',fontWeight:800,background:'rgba(234,88,12,.06)',border:'1px solid rgba(234,88,12,.15)',borderRadius:6}:isAI?{color:'#7c3aed',fontWeight:800,background:'rgba(124,58,237,.06)',border:'1px solid rgba(124,58,237,.15)',borderRadius:6}:undefined}
-            >{tab.l}</button>
-          })}
+        <button className="bdg bdg-voice" onClick={()=>setVoiceOpen(!voiceOpen)}>🎙️ Voice</button>
+        <div className="tab-scroll-wrap">
+          <button className="tab-arrow" onClick={()=>tabsRef.current&&(tabsRef.current.scrollLeft-=150)}>◀</button>
+          <div className="mtabs" ref={tabsRef}>
+            {[{t:'production',l:'🌽 Production'},{t:'environment',l:'🛰️ Environment'},{t:'market',l:'📈 Markets'},{t:'inputs',l:'🧴 Inputs'},{t:'finance',l:'💳 Finance'},{t:'youth',l:'👩‍🌾 Youth Farmers'},{t:'dairy',l:'🐄 Dairy'},{t:'programmes',l:'🗺️ Programmes'},{t:'foundation',l:'🌿 Foundation'},{t:'impact',l:'📊 Impact'},{t:'eudr',l:'☕ EUDR'},{t:'concept',l:'📝 Concept Note'},{t:'intelligence',l:'⚠️ Intelligence'},{t:'ai',l:'✨ AI'},{t:'datasources',l:'📊 Data'},{t:'demo',l:'🎯 Demo Mode'}].map(tab=>{
+              if(!allowedTabs.includes(tab.t))return null
+              const isDemo=tab.t==='demo'
+              const isFoundation=tab.t==='foundation'
+              const isAI=tab.t==='ai'
+              return <button key={tab.t} className={'mtb'+(curTab===tab.t?' on':'')} data-t={tab.t} onClick={()=>setTab(tab.t)}
+                style={isDemo?{color:'#fff',fontWeight:800,background:'linear-gradient(135deg,#ea580c,#c2410c)',borderRadius:6,padding:'0 12px'}:isFoundation?{color:'#ea580c',fontWeight:800,background:'rgba(234,88,12,.06)',border:'1px solid rgba(234,88,12,.15)',borderRadius:6}:isAI?{color:'#7c3aed',fontWeight:800,background:'rgba(124,58,237,.06)',border:'1px solid rgba(124,58,237,.15)',borderRadius:6}:undefined}
+              >{tab.l}</button>
+            })}
+          </div>
+          <button className="tab-arrow" onClick={()=>tabsRef.current&&(tabsRef.current.scrollLeft+=150)}>▶</button>
         </div>
         <div className="nav-r">
           <select className="nsel" value={crop} onChange={e=>{setCrop(e.target.value)}}>
@@ -348,8 +362,8 @@ export default function App(){
         </div>
       </div>
 
-      {/* VOICE BUTTON — only on youth tab */}
-      {curTab==='youth'&&<VoiceButton/>}
+      {/* VOICE BUTTON — visible on youth tab or when toggled from nav */}
+      {(curTab==='youth'||voiceOpen)&&<VoiceButton externalOpen={voiceOpen} setExternalOpen={setVoiceOpen}/>}
 
       {/* MOBILE TAB BAR */}
       <div className="mobile-tab-bar">
@@ -373,8 +387,10 @@ const SAMPLE_RATE=16000
 
 function arrayBufferToBase64(buf){const b=new Uint8Array(buf);let s='';for(let i=0;i<b.byteLength;i++)s+=String.fromCharCode(b[i]);return btoa(s)}
 
-function VoiceButton(){
-  const[open,setOpen]=useState(false)
+function VoiceButton({externalOpen,setExternalOpen}){
+  const[open,setOpenLocal]=useState(false)
+  const setOpen=(v)=>{setOpenLocal(v);setExternalOpen(v)}
+  useEffect(()=>{setOpenLocal(externalOpen)},[externalOpen])
   const[lang,setLang]=useState('sw')
   const[active,setActive]=useState(false)
   const[listening,setListening]=useState(false)
@@ -1071,6 +1087,19 @@ function buildPanelHTML(d,c,cn,sc,s,curTab){
   // ── DEMO tab ──
   else if(curTab==='demo'){
     html+='<div style="text-align:center;padding:30px"><div style="font-size:36px;margin-bottom:12px">🎯</div><h3>Demo Mode</h3><p style="font-size:10px;color:var(--t2);margin:8px 0 16px">Full-screen presentation mode for funder meetings</p><div style="font-size:9px;color:var(--t3)">Shows: dark-theme map · KPIs · Programme overview · AI strategy · Concept note generator</div></div>'
+  }
+  // ── VOICE ──
+  else if(s==='voice_assistant'){
+    html+='<div class="card" style="text-align:center;padding:20px 14px"><div style="font-size:36px;margin-bottom:8px">🎙️</div>'
+    html+='<div style="font-size:13px;font-weight:800;margin-bottom:4px">Voice Assistant</div>'
+    html+='<div style="font-size:10px;color:var(--t2);line-height:1.6;margin-bottom:10px">Tap the floating mic button (bottom-right) to start a voice conversation about <b>'+d.n+' District</b>.</div>'
+    html+='<div style="font-size:9px;color:var(--t3)">Speak in Kiswahili · Powered by Gemini Live Audio</div></div>'
+    html+='<div class="card gn"><div class="ch">📊 '+d.n+' Quick Facts</div>'
+    html+='<div class="row"><span>Crop Adoption</span><b style="color:'+cS(d.srr[c]||0)+'">'+(d.srr[c]||0)+'%</b></div>'
+    html+='<div class="row"><span>NDVI</span><b style="color:'+cN(d.ndvi)+'">'+d.ndvi+'</b></div>'
+    html+='<div class="row"><span>Finance</span><b style="color:'+cF(d.fin)+'">'+d.fin+'%</b></div>'
+    html+='<div class="row"><span>Region</span><b>'+d.r+'</b></div>'
+    html+='<span class="src">Ask the voice assistant about this district.</span></div>'
   }
   // ── DEFAULT ──
   else{

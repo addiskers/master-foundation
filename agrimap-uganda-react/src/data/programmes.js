@@ -23,7 +23,8 @@ export var TAB_SUBS={
   concept:['cn_generator','cn_preview','investment_calc','data_gaps'],
   demo:['demo_launch'],
   datasources:['overview','coffee','crops','livestock','population','finance','prices','satellite','eudr_data'],
-  ai:['satellite_ai','soil_ai','seed_ai','yield_forecast','crop_diagnosis','market_ai','farmer_msg','foundation_strategy','ask']
+  ai:['satellite_ai','soil_ai','seed_ai','yield_forecast','crop_diagnosis','market_ai','farmer_msg','foundation_strategy','ask'],
+  voice:['voice_assistant']
 };
 
 export var SUB_LBL={
@@ -41,20 +42,21 @@ export var SUB_LBL={
   eudr_overview:'\u{1F4CB} EUDR Overview',compliance_map:'\u{1F5FA}\uFE0F Compliance Map',coffee_traceability:'\u2615 Traceability',eudr_ai:'\u2728 EUDR AI',
   cn_generator:'\u270D\uFE0F Generate',cn_preview:'\u{1F4C4} Preview',investment_calc:'\u{1F4B0} Investment Calc',data_gaps:'\u{1F4CA} Data Gaps',
   demo_launch:'\u{1F3AF} Launch Demo',
-  satellite_ai:'\u{1F6F0}\uFE0F Satellite',soil_ai:'\u{1F9EA} Soil',seed_ai:'\u{1F331} Seed',yield_forecast:'\u{1F4C8} Yield',crop_diagnosis:'\u{1F52C} Diagnosis',market_ai:'\u{1F4B0} Market',farmer_msg:'\u{1F468}\u200D\u{1F33E} Advisory',foundation_strategy:'\u{1F91D} Strategy',ask:'\u{1F4AC} Ask'
+  satellite_ai:'\u{1F6F0}\uFE0F Satellite',soil_ai:'\u{1F9EA} Soil',seed_ai:'\u{1F331} Seed',yield_forecast:'\u{1F4C8} Yield',crop_diagnosis:'\u{1F52C} Diagnosis',market_ai:'\u{1F4B0} Market',farmer_msg:'\u{1F468}\u200D\u{1F33E} Advisory',foundation_strategy:'\u{1F91D} Strategy',ask:'\u{1F4AC} Ask',
+  voice_assistant:'\u{1F399}\uFE0F Voice Assistant'
 };
 
 export var ROLES={
-  ps:{name:"PS / Commissioner MAAIF",abbr:"PS",col:"#16a34a",tabs:["production","environment","market","inputs","finance","youth","dairy","programmes","foundation","impact","eudr","concept","datasources","intelligence","ai","demo"]},
-  dir_crop:{name:"Dir. Crop Production",abbr:"DC",col:"#15803d",tabs:["production","environment","market","inputs","finance","intelligence","eudr","ai"]},
-  dir_pp:{name:"Dir. Plant Protection",abbr:"PP",col:"#dc2626",tabs:["environment","production","intelligence","ai"]},
-  naro:{name:"NARO Researcher",abbr:"NR",col:"#7c3aed",tabs:["production","environment","inputs","intelligence","eudr","ai"]},
-  coffee:{name:"MAAIF Coffee Unit",abbr:"CU",col:"#92400e",tabs:["market","environment","production","eudr","intelligence","ai"]},
-  dao:{name:"District Agri Officer",abbr:"DAO",col:"#475569",tabs:["production","environment","market","inputs","finance","youth","dairy","programmes","foundation","impact","datasources","intelligence","ai"]},
-  ext:{name:"Extension Worker",abbr:"EW",col:"#65a30d",tabs:["production","environment","inputs","youth","dairy","programmes","intelligence","ai"]},
-  youth_farmer:{name:"Youth Farmer",abbr:"YF",col:"#0891b2",tabs:["youth","dairy","market","inputs","finance","ai"]},
-  agro_dealer:{name:"Agro-Dealer",abbr:"AD",col:"#16a34a",tabs:["inputs","market","production","finance","ai"]},
-  foundation_staff:{name:"AgriMap Foundation",abbr:"FDN",col:"#16a34a",tabs:["foundation","youth","dairy","programmes","impact","concept","eudr","market","finance","environment","intelligence","ai","demo"]},
-  ngo:{name:"NGO / Dev Partner",abbr:"NGO",col:"#0891b2",tabs:["production","environment","market","finance","youth","dairy","programmes","foundation","impact","datasources","intelligence","ai"]},
-  agribiz:{name:"Agribusiness / Bank",abbr:"AB",col:"#1d4ed8",tabs:["market","finance","dairy","eudr","production","intelligence","ai"]}
+  ps:{name:"PS / Commissioner MAAIF",abbr:"PS",col:"#16a34a",tabs:["production","environment","market","inputs","finance","youth","dairy","programmes","foundation","impact","eudr","concept","datasources","intelligence","ai","voice","demo"]},
+  dir_crop:{name:"Dir. Crop Production",abbr:"DC",col:"#15803d",tabs:["production","environment","market","inputs","finance","intelligence","eudr","ai","voice"]},
+  dir_pp:{name:"Dir. Plant Protection",abbr:"PP",col:"#dc2626",tabs:["environment","production","intelligence","ai","voice"]},
+  naro:{name:"NARO Researcher",abbr:"NR",col:"#7c3aed",tabs:["production","environment","inputs","intelligence","eudr","ai","voice"]},
+  coffee:{name:"MAAIF Coffee Unit",abbr:"CU",col:"#92400e",tabs:["market","environment","production","eudr","intelligence","ai","voice"]},
+  dao:{name:"District Agri Officer",abbr:"DAO",col:"#475569",tabs:["production","environment","market","inputs","finance","youth","dairy","programmes","foundation","impact","datasources","intelligence","ai","voice"]},
+  ext:{name:"Extension Worker",abbr:"EW",col:"#65a30d",tabs:["production","environment","inputs","youth","dairy","programmes","intelligence","ai","voice"]},
+  youth_farmer:{name:"Youth Farmer",abbr:"YF",col:"#0891b2",tabs:["youth","dairy","market","inputs","finance","ai","voice"]},
+  agro_dealer:{name:"Agro-Dealer",abbr:"AD",col:"#16a34a",tabs:["inputs","market","production","finance","ai","voice"]},
+  foundation_staff:{name:"AgriMap Foundation",abbr:"FDN",col:"#16a34a",tabs:["foundation","youth","dairy","programmes","impact","concept","eudr","market","finance","environment","intelligence","ai","voice","demo"]},
+  ngo:{name:"NGO / Dev Partner",abbr:"NGO",col:"#0891b2",tabs:["production","environment","market","finance","youth","dairy","programmes","foundation","impact","datasources","intelligence","ai","voice"]},
+  agribiz:{name:"Agribusiness / Bank",abbr:"AB",col:"#1d4ed8",tabs:["market","finance","dairy","eudr","production","intelligence","ai","voice"]}
 };
