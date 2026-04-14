@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  uganda-frontend:
+    build: ./agrimap-uganda-react
+    container_name: uganda-frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:80"
+
+  uganda-backend:
+    build: ./swahili/backend
+    container_name: uganda-backend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8001:8000"
+    env_file:
+      - ./swahili/.env
