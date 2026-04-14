@@ -348,8 +348,8 @@ export default function App(){
         </div>
       </div>
 
-      {/* VOICE BUTTON WITH LANGUAGE DROPDOWN */}
-      <VoiceButton curD={curD} crop={crop}/>
+      {/* VOICE BUTTON — only on youth tab */}
+      {curTab==='youth'&&<VoiceButton/>}
 
       {/* MOBILE TAB BAR */}
       <div className="mobile-tab-bar">
@@ -367,15 +367,13 @@ export default function App(){
 // VOICE BUTTON — Gemini Live Audio via WebSocket
 // ══════════════════════════════════════════════
 const VOICE_LANGS=[
-  {code:'sw',name:'Kiswahili',flag:'🇹🇿'},
-  {code:'am',name:'አማርኛ',flag:'🇪🇹'},
-  {code:'om',name:'Oromoo',flag:'🇪🇹'}
+  {code:'sw',name:'Kiswahili',flag:'🇹🇿'}
 ]
 const SAMPLE_RATE=16000
 
 function arrayBufferToBase64(buf){const b=new Uint8Array(buf);let s='';for(let i=0;i<b.byteLength;i++)s+=String.fromCharCode(b[i]);return btoa(s)}
 
-function VoiceButton({curD,crop}){
+function VoiceButton(){
   const[open,setOpen]=useState(false)
   const[lang,setLang]=useState('sw')
   const[active,setActive]=useState(false)
@@ -492,14 +490,10 @@ function VoiceButton({curD,crop}){
       <div style={panelStyle}>
         <div style={{fontSize:10,fontWeight:800,textTransform:'uppercase',letterSpacing:1.5,color:'var(--t3)',marginBottom:10}}>🎙️ Voice Assistant</div>
 
-        {/* Language selector */}
-        <div style={{display:'flex',gap:4,marginBottom:12}}>
-          {VOICE_LANGS.map(l=>(
-            <button key={l.code} onClick={()=>{if(!active)setLang(l.code)}} style={{flex:1,padding:'8px 4px',borderRadius:8,border:lang===l.code?'2px solid #16a34a':'1px solid var(--bd)',background:lang===l.code?'rgba(22,163,74,.1)':'var(--s2)',cursor:active?'default':'pointer',opacity:active&&lang!==l.code?.4:1,textAlign:'center',transition:'.2s'}}>
-              <div style={{fontSize:18}}>{l.flag}</div>
-              <div style={{fontSize:9,fontWeight:700,color:lang===l.code?'#16a34a':'var(--t2)',marginTop:2}}>{l.name}</div>
-            </button>
-          ))}
+        {/* Language indicator */}
+        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:12,padding:'6px 10px',background:'rgba(22,163,74,.08)',borderRadius:8,border:'1px solid rgba(22,163,74,.15)'}}>
+          <span style={{fontSize:16}}>🇹🇿</span>
+          <span style={{fontSize:10,fontWeight:700,color:'#16a34a'}}>Kiswahili</span>
         </div>
 
         {/* Big mic button */}
@@ -525,14 +519,10 @@ function VoiceButton({curD,crop}){
         {/* Error */}
         {err&&<div style={{padding:8,background:'rgba(220,38,38,.08)',borderRadius:8,fontSize:9,color:'#dc2626',border:'1px solid rgba(220,38,38,.2)'}}>{err}</div>}
 
-        {/* Context */}
-        <div style={{marginTop:8,fontSize:8,color:'var(--t3)',textAlign:'center'}}>
-          {curD?`📍 ${curD.n} District · ${curD.r} Region`:'Select a district for context'}
-        </div>
       </div>
 
       {/* Floating button */}
-      <button onClick={()=>{if(!open)setOpen(true);else if(active){stop();setOpen(false)}else setOpen(false)}} style={{width:52,height:52,borderRadius:'50%',background:active?'linear-gradient(135deg,#dc2626,#b91c1c)':open?'linear-gradient(135deg,#374151,#1f2937)':'linear-gradient(135deg,#16a34a,#15803d)',border:'none',cursor:'pointer',boxShadow:active?'0 0 0 6px rgba(220,38,38,.15), 0 4px 16px rgba(220,38,38,.3)':'0 4px 16px rgba(22,163,74,.3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,color:'#fff',transition:'.2s',animation:active?'vpulse 1.5s infinite':'none'}} title="Voice Assistant">
+      <button onClick={()=>{if(!open)setOpen(true);else{if(active)stop();setOpen(false)}}} style={{width:52,height:52,borderRadius:'50%',background:active?'linear-gradient(135deg,#dc2626,#b91c1c)':open?'linear-gradient(135deg,#374151,#1f2937)':'linear-gradient(135deg,#16a34a,#15803d)',border:'none',cursor:'pointer',boxShadow:active?'0 0 0 6px rgba(220,38,38,.15), 0 4px 16px rgba(220,38,38,.3)':'0 4px 16px rgba(22,163,74,.3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,color:'#fff',transition:'.2s',animation:active?'vpulse 1.5s infinite':'none'}} title="Voice Assistant">
         {active?'🔴':open?'✕':'🎙️'}
       </button>
     </div>
