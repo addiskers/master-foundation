@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from app.config import get_settings
-from app.routers import voice
+from app.routers import voice, voice_en
 
 settings = get_settings()
 
 app = FastAPI(title="AgriMap Voice API")
 
 app.include_router(voice.router)
+app.include_router(voice_en.router)
 
 
 @app.get("/api/health")

@@ -381,7 +381,8 @@ export default function App(){
 // VOICE BUTTON — Gemini Live Audio via WebSocket
 // ══════════════════════════════════════════════
 const VOICE_LANGS=[
-  {code:'sw',name:'Kiswahili',flag:'🇹🇿'}
+  {code:'sw',name:'Kiswahili',flag:'🇹🇿',endpoint:'/api/voice'},
+  {code:'en',name:'English',flag:'🇬🇧',endpoint:'/api/voice-en'}
 ]
 const SAMPLE_RATE=16000
 
@@ -456,7 +457,7 @@ function VoiceButton({externalOpen,setExternalOpen}){
     try{
       const proto=window.location.protocol==='https:'?'wss:':'ws:'
       const host=window.location.host
-      const ws=new WebSocket(`${proto}//${host}/api/voice`)
+      const ws=new WebSocket(`${proto}//${host}${langInfo.endpoint}`)
       wsRef.current=ws
       await new Promise((res,rej)=>{ws.onopen=()=>res();ws.onerror=()=>rej(new Error('Cannot connect to voice server. Start the backend: cd swahili && uvicorn app.main:app --port 8000'));setTimeout(()=>rej(new Error('Connection timeout')),5000)})
 
@@ -492,7 +493,7 @@ function VoiceButton({externalOpen,setExternalOpen}){
       source.connect(proc);proc.connect(audioCtx.destination)
       setActive(true);setListening(true)
     }catch(e){setErr(e.message);stop()}
-  },[stop,playNext])
+  },[stop,playNext,lang])
 
   const toggle=()=>{if(active)stop();else start()}
 
@@ -506,10 +507,14 @@ function VoiceButton({externalOpen,setExternalOpen}){
       <div style={panelStyle}>
         <div style={{fontSize:10,fontWeight:800,textTransform:'uppercase',letterSpacing:1.5,color:'var(--t3)',marginBottom:10}}>🎙️ Voice Assistant</div>
 
-        {/* Language indicator */}
-        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:12,padding:'6px 10px',background:'rgba(22,163,74,.08)',borderRadius:8,border:'1px solid rgba(22,163,74,.15)'}}>
-          <span style={{fontSize:16}}>🇹🇿</span>
-          <span style={{fontSize:10,fontWeight:700,color:'#16a34a'}}>Kiswahili</span>
+        {/* Language tabs */}
+        <div style={{display:'flex',gap:4,marginBottom:12}}>
+          {VOICE_LANGS.map(l=>(
+            <button key={l.code} onClick={()=>{if(active)stop();setLang(l.code)}} style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:4,padding:'6px 10px',borderRadius:8,border:lang===l.code?'1px solid rgba(22,163,74,.4)':'1px solid var(--bd)',background:lang===l.code?'rgba(22,163,74,.08)':'transparent',cursor:'pointer',transition:'.15s'}}>
+              <span style={{fontSize:14}}>{l.flag}</span>
+              <span style={{fontSize:10,fontWeight:700,color:lang===l.code?'#16a34a':'var(--t2)'}}>{l.name}</span>
+            </button>
+          ))}
         </div>
 
         {/* Big mic button */}
@@ -1093,7 +1098,7 @@ function buildPanelHTML(d,c,cn,sc,s,curTab){
     html+='<div class="card" style="text-align:center;padding:20px 14px"><div style="font-size:36px;margin-bottom:8px">🎙️</div>'
     html+='<div style="font-size:13px;font-weight:800;margin-bottom:4px">Voice Assistant</div>'
     html+='<div style="font-size:10px;color:var(--t2);line-height:1.6;margin-bottom:10px">Tap the floating mic button (bottom-right) to start a voice conversation about <b>'+d.n+' District</b>.</div>'
-    html+='<div style="font-size:9px;color:var(--t3)">Speak in Kiswahili · Powered by Gemini Live Audio</div></div>'
+    html+='<div style="font-size:9px;color:var(--t3)">Speak in English or Kiswahili · Powered by Gemini Live Audio</div></div>'
     html+='<div class="card gn"><div class="ch">📊 '+d.n+' Quick Facts</div>'
     html+='<div class="row"><span>Crop Adoption</span><b style="color:'+cS(d.srr[c]||0)+'">'+(d.srr[c]||0)+'%</b></div>'
     html+='<div class="row"><span>NDVI</span><b style="color:'+cN(d.ndvi)+'">'+d.ndvi+'</b></div>'
